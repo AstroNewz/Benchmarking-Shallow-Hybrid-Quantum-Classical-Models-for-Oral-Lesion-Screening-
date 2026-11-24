@@ -1,0 +1,2027 @@
+{
+  "interval_version": "v1-e6-test-intervals-1",
+  "created_at_utc": "2026-10-06T11:17:43.299630+00:00",
+  "runtime_seconds": 78.5,
+  "preregistered": false,
+  "selection_performed": false,
+  "what_this_is": "Patient-level bootstrap intervals around test-partition point estimates that were already frozen and already reported. No model, threshold, representation or condition was chosen here.",
+  "what_this_is_not": "Not a new test-set evaluation and not a model comparison. No p-value is reported. The one interval that excludes zero (the paired model-minus-leak-bar delta) is a post-hoc observation and must be labelled as such.",
+  "bootstrap": {
+    "draws": 2000,
+    "seed": 42,
+    "unit": "patient (resampled with replacement)",
+    "shared_draws_within_condition": true,
+    "why_patient_level": "Images from one patient share a diagnosis. An image-level bootstrap treats correlated rows as independent and understates the interval, which is the direction that manufactures significance."
+  },
+  "classical_reference": {
+    "model_version": "v1-handcrafted",
+    "threshold": 0.5,
+    "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+    "records": {
+      "logistic_regression": {
+        "hyperparameters": {
+          "C": 0.01
+        },
+        "random_seed": 42,
+        "n_train_samples": 1692,
+        "n_train_positive": 104
+      },
+      "random_forest": {
+        "hyperparameters": {
+          "n_estimators": 600,
+          "max_depth": 12,
+          "min_samples_leaf": 4
+        },
+        "random_seed": 42,
+        "n_train_samples": 1692,
+        "n_train_positive": 104
+      },
+      "gradient_boosting": {
+        "hyperparameters": {
+          "n_estimators": 200,
+          "learning_rate": 0.1,
+          "max_depth": 3
+        },
+        "random_seed": 42,
+        "n_train_samples": 1692,
+        "n_train_positive": 104
+      }
+    },
+    "refit_partition": "train"
+  },
+  "leak_bar_note": "The leak-bar score is -roi_area_fraction. roi_geometry_leak rank-transforms it to [0,1] first; ROC-AUC and average precision are rank statistics and invariant under that monotone map, which the anchor check verifies to 1e-12.",
+  "modes": {
+    "oracle": {
+      "roi_mode": "oracle",
+      "frozen_artifact": "reports_final_oracle.json",
+      "n_test_rows": 381,
+      "conditions": [
+        {
+          "condition": "A_all",
+          "description": "Condition A: every row of the oracle cache, whichever annotation supplied the ROI. Confounded by annotation practice -- see the subdivisions.",
+          "partition": "test",
+          "n_samples": 381,
+          "n_positive": 18,
+          "n_negative": 363,
+          "n_patients": 48,
+          "n_patients_with_a_positive": 11,
+          "prevalence": 0.047244,
+          "leak_bar_point": {
+            "area_only_roc_auc": 0.8477196204468932,
+            "area_only_pr_auc": 0.2109507693085029,
+            "n_finite_area": 381
+          },
+          "baselines": {
+            "gradient_boosting": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9326599326599326,
+                "pr_auc": 0.5625385424675438,
+                "sensitivity": 0.5,
+                "specificity": 0.977961
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.931222,
+                  "standard_error": 0.043054,
+                  "p2_5": 0.82833,
+                  "p50": 0.937386,
+                  "p97_5": 0.989891,
+                  "min": 0.709879,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.585351,
+                  "standard_error": 0.144481,
+                  "p2_5": 0.28892,
+                  "p50": 0.585508,
+                  "p97_5": 0.858532,
+                  "min": 0.130823,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.493964,
+                  "standard_error": 0.171603,
+                  "p2_5": 0.142857,
+                  "p50": 0.5,
+                  "p97_5": 0.818316,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.977979,
+                  "standard_error": 0.009519,
+                  "p2_5": 0.958097,
+                  "p50": 0.97854,
+                  "p97_5": 0.994429,
+                  "min": 0.937337,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.085096,
+                "standard_error": 0.062316,
+                "p2_5": -0.042946,
+                "p50": 0.084211,
+                "p97_5": 0.203166,
+                "min": -0.142857,
+                "max": 0.307743,
+                "excludes_zero": false,
+                "fraction_of_draws_above_zero": 0.916,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.93266,
+                  "recomputed": 0.93266,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.562539,
+                  "recomputed": 0.562539,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5,
+                  "recomputed": 0.5,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.977961,
+                  "recomputed": 0.977961,
+                  "reproduced": true
+                }
+              }
+            },
+            "logistic_regression": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9256198347107438,
+                "pr_auc": 0.5125300506759567,
+                "sensitivity": 0.722222,
+                "specificity": 0.878788
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.927396,
+                  "standard_error": 0.031596,
+                  "p2_5": 0.861103,
+                  "p50": 0.928965,
+                  "p97_5": 0.985577,
+                  "min": 0.788628,
+                  "max": 0.997978
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.51844,
+                  "standard_error": 0.153445,
+                  "p2_5": 0.215853,
+                  "p50": 0.5221,
+                  "p97_5": 0.799633,
+                  "min": 0.109083,
+                  "max": 0.961085
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.725397,
+                  "standard_error": 0.137053,
+                  "p2_5": 0.444444,
+                  "p50": 0.727273,
+                  "p97_5": 1.0,
+                  "min": 0.142857,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.879524,
+                  "standard_error": 0.030204,
+                  "p2_5": 0.815126,
+                  "p50": 0.881215,
+                  "p97_5": 0.933667,
+                  "min": 0.753709,
+                  "max": 0.963173
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.08127,
+                "standard_error": 0.056843,
+                "p2_5": -0.029521,
+                "p50": 0.080228,
+                "p97_5": 0.194056,
+                "min": -0.106648,
+                "max": 0.278478,
+                "excludes_zero": false,
+                "fraction_of_draws_above_zero": 0.929,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.92562,
+                  "recomputed": 0.92562,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.51253,
+                  "recomputed": 0.51253,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.722222,
+                  "recomputed": 0.722222,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.878788,
+                  "recomputed": 0.878788,
+                  "reproduced": true
+                }
+              }
+            },
+            "random_forest": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9410774410774411,
+                "pr_auc": 0.5750091063509937,
+                "sensitivity": 0.444444,
+                "specificity": 0.986226
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.940224,
+                  "standard_error": 0.027958,
+                  "p2_5": 0.877318,
+                  "p50": 0.943094,
+                  "p97_5": 0.986886,
+                  "min": 0.799431,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.572716,
+                  "standard_error": 0.149769,
+                  "p2_5": 0.244513,
+                  "p50": 0.584899,
+                  "p97_5": 0.840501,
+                  "min": 0.104182,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.436921,
+                  "standard_error": 0.160761,
+                  "p2_5": 0.125,
+                  "p50": 0.4375,
+                  "p97_5": 0.769318,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.986354,
+                  "standard_error": 0.008724,
+                  "p2_5": 0.967114,
+                  "p50": 0.987088,
+                  "p97_5": 1.0,
+                  "min": 0.952507,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.094097,
+                "standard_error": 0.055368,
+                "p2_5": -0.010127,
+                "p50": 0.09211,
+                "p97_5": 0.202211,
+                "min": -0.08275,
+                "max": 0.31086,
+                "excludes_zero": false,
+                "fraction_of_draws_above_zero": 0.9615,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.941077,
+                  "recomputed": 0.941077,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.575009,
+                  "recomputed": 0.575009,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.444444,
+                  "recomputed": 0.444444,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.986226,
+                  "recomputed": 0.986226,
+                  "reproduced": true
+                }
+              }
+            }
+          },
+          "measurable": true,
+          "leak_bar_interval": {
+            "roc_auc": {
+              "measured": true,
+              "quantity": "area_only_roc_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.846127,
+              "standard_error": 0.049017,
+              "p2_5": 0.738553,
+              "p50": 0.850177,
+              "p97_5": 0.929264,
+              "min": 0.652559,
+              "max": 0.961629
+            },
+            "pr_auc": {
+              "measured": true,
+              "quantity": "area_only_pr_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.236996,
+              "standard_error": 0.088378,
+              "p2_5": 0.092076,
+              "p50": 0.228097,
+              "p97_5": 0.430475,
+              "min": 0.028959,
+              "max": 0.559167
+            }
+          },
+          "leak_bar_anchor_check": {
+            "frozen": 0.8477196204468932,
+            "recomputed": 0.8477196204468932,
+            "reproduced": true
+          }
+        },
+        {
+          "condition": "A_center_crop",
+          "description": "Condition A rows with no annotation at all, cropped by the documented centre-crop fallback. Not an oracle ROI in any meaningful sense.",
+          "partition": "test",
+          "n_samples": 66,
+          "n_positive": 0,
+          "n_negative": 66,
+          "n_patients": 9,
+          "n_patients_with_a_positive": 0,
+          "prevalence": 0.0,
+          "leak_bar_point": {
+            "area_only_roc_auc": null,
+            "area_only_pr_auc": null,
+            "n_finite_area": 66
+          },
+          "baselines": {},
+          "measurable": false,
+          "reason": "the condition contains a single class on the test partition; the frozen artifact reports metrics: null here and this module reports no interval"
+        },
+        {
+          "condition": "A_lesion_polygon",
+          "description": "Condition A restricted to annotator lesion boxes: the tightest oracle ROI and the only one that isolates the lesion.",
+          "partition": "test",
+          "n_samples": 49,
+          "n_positive": 18,
+          "n_negative": 31,
+          "n_patients": 23,
+          "n_patients_with_a_positive": 11,
+          "prevalence": 0.367347,
+          "leak_bar_point": {
+            "area_only_roc_auc": 0.4336917562724014,
+            "area_only_pr_auc": 0.341681377129362,
+            "n_finite_area": 49
+          },
+          "baselines": {
+            "gradient_boosting": {
+              "measured": true,
+              "n_scored": 49,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.7777777777777778,
+                "pr_auc": 0.6693628827802434,
+                "sensitivity": 0.5,
+                "specificity": 0.870968
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.774157,
+                  "standard_error": 0.0887,
+                  "p2_5": 0.585457,
+                  "p50": 0.782226,
+                  "p97_5": 0.92344,
+                  "min": 0.219048,
+                  "max": 0.996667
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.684027,
+                  "standard_error": 0.132347,
+                  "p2_5": 0.410512,
+                  "p50": 0.6871,
+                  "p97_5": 0.9107,
+                  "min": 0.128889,
+                  "max": 0.992157
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.490328,
+                  "standard_error": 0.167799,
+                  "p2_5": 0.15375,
+                  "p50": 0.5,
+                  "p97_5": 0.8,
+                  "min": 0.0,
+                  "max": 0.933333
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.871231,
+                  "standard_error": 0.053783,
+                  "p2_5": 0.757576,
+                  "p50": 0.875,
+                  "p97_5": 0.967742,
+                  "min": 0.684211,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.3452,
+                "standard_error": 0.107123,
+                "p2_5": 0.128757,
+                "p50": 0.34239,
+                "p97_5": 0.556224,
+                "min": -0.071429,
+                "max": 0.708889,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.9975,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.777778,
+                  "recomputed": 0.777778,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.669363,
+                  "recomputed": 0.669363,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5,
+                  "recomputed": 0.5,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.870968,
+                  "recomputed": 0.870968,
+                  "reproduced": true
+                }
+              }
+            },
+            "logistic_regression": {
+              "measured": true,
+              "n_scored": 49,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.7168458781362006,
+                "pr_auc": 0.6521930129719985,
+                "sensitivity": 0.722222,
+                "specificity": 0.419355
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.719688,
+                  "standard_error": 0.104199,
+                  "p2_5": 0.508221,
+                  "p50": 0.727012,
+                  "p97_5": 0.90375,
+                  "min": 0.3,
+                  "max": 0.963947
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.650118,
+                  "standard_error": 0.139964,
+                  "p2_5": 0.341068,
+                  "p50": 0.663303,
+                  "p97_5": 0.877961,
+                  "min": 0.125,
+                  "max": 0.958798
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.722949,
+                  "standard_error": 0.138008,
+                  "p2_5": 0.444444,
+                  "p50": 0.727273,
+                  "p97_5": 1.0,
+                  "min": 0.2,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.423281,
+                  "standard_error": 0.106619,
+                  "p2_5": 0.218716,
+                  "p50": 0.419355,
+                  "p97_5": 0.634202,
+                  "min": 0.09375,
+                  "max": 0.766667
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.290732,
+                "standard_error": 0.127017,
+                "p2_5": 0.034017,
+                "p50": 0.294751,
+                "p97_5": 0.531278,
+                "min": -0.178571,
+                "max": 0.664286,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.9875,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.716846,
+                  "recomputed": 0.716846,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.652193,
+                  "recomputed": 0.652193,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.722222,
+                  "recomputed": 0.722222,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.419355,
+                  "recomputed": 0.419355,
+                  "reproduced": true
+                }
+              }
+            },
+            "random_forest": {
+              "measured": true,
+              "n_scored": 49,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.7544802867383513,
+                "pr_auc": 0.7094517549278074,
+                "sensitivity": 0.444444,
+                "specificity": 0.967742
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.75125,
+                  "standard_error": 0.092026,
+                  "p2_5": 0.554681,
+                  "p50": 0.75652,
+                  "p97_5": 0.915022,
+                  "min": 0.252381,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.707872,
+                  "standard_error": 0.124998,
+                  "p2_5": 0.412949,
+                  "p50": 0.722311,
+                  "p97_5": 0.900546,
+                  "min": 0.190909,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.435107,
+                  "standard_error": 0.156596,
+                  "p2_5": 0.124816,
+                  "p50": 0.4375,
+                  "p97_5": 0.727424,
+                  "min": 0.0,
+                  "max": 0.933333
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.967267,
+                  "standard_error": 0.031394,
+                  "p2_5": 0.892857,
+                  "p50": 0.96875,
+                  "p97_5": 1.0,
+                  "min": 0.787879,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.322294,
+                "standard_error": 0.110567,
+                "p2_5": 0.099931,
+                "p50": 0.320156,
+                "p97_5": 0.538997,
+                "min": -0.039773,
+                "max": 0.706667,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.997,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.75448,
+                  "recomputed": 0.75448,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.709452,
+                  "recomputed": 0.709452,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.444444,
+                  "recomputed": 0.444444,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.967742,
+                  "recomputed": 0.967742,
+                  "reproduced": true
+                }
+              }
+            }
+          },
+          "measurable": true,
+          "leak_bar_interval": {
+            "roc_auc": {
+              "measured": true,
+              "quantity": "area_only_roc_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.428956,
+              "standard_error": 0.083111,
+              "p2_5": 0.266648,
+              "p50": 0.429713,
+              "p97_5": 0.593335,
+              "min": 0.155769,
+              "max": 0.700758
+            },
+            "pr_auc": {
+              "measured": true,
+              "quantity": "area_only_pr_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.366128,
+              "standard_error": 0.093537,
+              "p2_5": 0.187393,
+              "p50": 0.365339,
+              "p97_5": 0.554505,
+              "min": 0.078288,
+              "max": 0.68791
+            }
+          },
+          "leak_bar_anchor_check": {
+            "frozen": 0.4336917562724014,
+            "recomputed": 0.4336917562724014,
+            "reproduced": true
+          }
+        },
+        {
+          "condition": "A_region_polygon",
+          "description": "Condition A restricted to annotator region boxes, which cover ~97% of the frame and are almost entirely normal mucosa.",
+          "partition": "test",
+          "n_samples": 266,
+          "n_positive": 0,
+          "n_negative": 266,
+          "n_patients": 40,
+          "n_patients_with_a_positive": 0,
+          "prevalence": 0.0,
+          "leak_bar_point": {
+            "area_only_roc_auc": null,
+            "area_only_pr_auc": null,
+            "n_finite_area": 266
+          },
+          "baselines": {},
+          "measurable": false,
+          "reason": "the condition contains a single class on the test partition; the frozen artifact reports metrics: null here and this module reports no interval"
+        }
+      ]
+    },
+    "predicted": {
+      "roi_mode": "predicted",
+      "frozen_artifact": "reports_final_predicted.json",
+      "n_test_rows": 381,
+      "conditions": [
+        {
+          "condition": "B_and_C_all",
+          "description": "Conditions B and C together: what an end-to-end run actually sees. Reported alongside B and C, never instead of them.",
+          "partition": "test",
+          "n_samples": 381,
+          "n_positive": 18,
+          "n_negative": 363,
+          "n_patients": 48,
+          "n_patients_with_a_positive": 11,
+          "prevalence": 0.047244,
+          "leak_bar_point": {
+            "area_only_roc_auc": 0.4745944291398837,
+            "area_only_pr_auc": 0.04986518274813487,
+            "n_finite_area": 381
+          },
+          "baselines": {
+            "gradient_boosting": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9326599326599326,
+                "pr_auc": 0.5625385424675438,
+                "sensitivity": 0.5,
+                "specificity": 0.977961
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.931222,
+                  "standard_error": 0.043054,
+                  "p2_5": 0.82833,
+                  "p50": 0.937386,
+                  "p97_5": 0.989891,
+                  "min": 0.709879,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.585351,
+                  "standard_error": 0.144481,
+                  "p2_5": 0.28892,
+                  "p50": 0.585508,
+                  "p97_5": 0.858532,
+                  "min": 0.130823,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.493964,
+                  "standard_error": 0.171603,
+                  "p2_5": 0.142857,
+                  "p50": 0.5,
+                  "p97_5": 0.818316,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.977979,
+                  "standard_error": 0.009519,
+                  "p2_5": 0.958097,
+                  "p50": 0.97854,
+                  "p97_5": 0.994429,
+                  "min": 0.937337,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.453586,
+                "standard_error": 0.066681,
+                "p2_5": 0.301539,
+                "p50": 0.458719,
+                "p97_5": 0.568922,
+                "min": 0.10708,
+                "max": 0.639977,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.93266,
+                  "recomputed": 0.93266,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.562539,
+                  "recomputed": 0.562539,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5,
+                  "recomputed": 0.5,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.977961,
+                  "recomputed": 0.977961,
+                  "reproduced": true
+                }
+              }
+            },
+            "logistic_regression": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9256198347107438,
+                "pr_auc": 0.5125300506759567,
+                "sensitivity": 0.722222,
+                "specificity": 0.878788
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.927396,
+                  "standard_error": 0.031596,
+                  "p2_5": 0.861103,
+                  "p50": 0.928965,
+                  "p97_5": 0.985577,
+                  "min": 0.788628,
+                  "max": 0.997978
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.51844,
+                  "standard_error": 0.153445,
+                  "p2_5": 0.215853,
+                  "p50": 0.5221,
+                  "p97_5": 0.799633,
+                  "min": 0.109083,
+                  "max": 0.961085
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.725397,
+                  "standard_error": 0.137053,
+                  "p2_5": 0.444444,
+                  "p50": 0.727273,
+                  "p97_5": 1.0,
+                  "min": 0.142857,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.879524,
+                  "standard_error": 0.030204,
+                  "p2_5": 0.815126,
+                  "p50": 0.881215,
+                  "p97_5": 0.933667,
+                  "min": 0.753709,
+                  "max": 0.963173
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.44976,
+                "standard_error": 0.057898,
+                "p2_5": 0.324301,
+                "p50": 0.452131,
+                "p97_5": 0.555784,
+                "min": 0.195575,
+                "max": 0.639744,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.92562,
+                  "recomputed": 0.92562,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.51253,
+                  "recomputed": 0.51253,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.722222,
+                  "recomputed": 0.722222,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.878788,
+                  "recomputed": 0.878788,
+                  "reproduced": true
+                }
+              }
+            },
+            "random_forest": {
+              "measured": true,
+              "n_scored": 381,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9410774410774411,
+                "pr_auc": 0.5750091063509937,
+                "sensitivity": 0.444444,
+                "specificity": 0.986226
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.940224,
+                  "standard_error": 0.027958,
+                  "p2_5": 0.877318,
+                  "p50": 0.943094,
+                  "p97_5": 0.986886,
+                  "min": 0.799431,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.572716,
+                  "standard_error": 0.149769,
+                  "p2_5": 0.244513,
+                  "p50": 0.584899,
+                  "p97_5": 0.840501,
+                  "min": 0.104182,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.436921,
+                  "standard_error": 0.160761,
+                  "p2_5": 0.125,
+                  "p50": 0.4375,
+                  "p97_5": 0.769318,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.986354,
+                  "standard_error": 0.008724,
+                  "p2_5": 0.967114,
+                  "p50": 0.987088,
+                  "p97_5": 1.0,
+                  "min": 0.952507,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.462587,
+                "standard_error": 0.056097,
+                "p2_5": 0.337131,
+                "p50": 0.465118,
+                "p97_5": 0.561591,
+                "min": 0.176106,
+                "max": 0.613572,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.941077,
+                  "recomputed": 0.941077,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.575009,
+                  "recomputed": 0.575009,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.444444,
+                  "recomputed": 0.444444,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.986226,
+                  "recomputed": 0.986226,
+                  "reproduced": true
+                }
+              }
+            }
+          },
+          "measurable": true,
+          "leak_bar_interval": {
+            "roc_auc": {
+              "measured": true,
+              "quantity": "area_only_roc_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.477636,
+              "standard_error": 0.044741,
+              "p2_5": 0.396964,
+              "p50": 0.476148,
+              "p97_5": 0.572631,
+              "min": 0.302965,
+              "max": 0.727729
+            },
+            "pr_auc": {
+              "measured": true,
+              "quantity": "area_only_pr_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.056133,
+              "standard_error": 0.018392,
+              "p2_5": 0.025926,
+              "p50": 0.054011,
+              "p97_5": 0.097226,
+              "min": 0.010741,
+              "max": 0.140469
+            }
+          },
+          "leak_bar_anchor_check": {
+            "frozen": 0.4745944291398837,
+            "recomputed": 0.4745944291398837,
+            "reproduced": true
+          }
+        },
+        {
+          "condition": "B_localized",
+          "description": "Condition B: the frozen localiser produced a box that passed its acceptance checks. The deployable path.",
+          "partition": "test",
+          "n_samples": 374,
+          "n_positive": 16,
+          "n_negative": 358,
+          "n_patients": 48,
+          "n_patients_with_a_positive": 11,
+          "prevalence": 0.042781,
+          "leak_bar_point": {
+            "area_only_roc_auc": 0.5129189944134078,
+            "area_only_pr_auc": 0.04964496374648053,
+            "n_finite_area": 374
+          },
+          "baselines": {
+            "gradient_boosting": {
+              "measured": true,
+              "n_scored": 374,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9299930167597765,
+                "pr_auc": 0.5734614994380619,
+                "sensitivity": 0.5625,
+                "specificity": 0.977654
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.928429,
+                  "standard_error": 0.047642,
+                  "p2_5": 0.814703,
+                  "p50": 0.935214,
+                  "p97_5": 0.992101,
+                  "min": 0.686437,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.593849,
+                  "standard_error": 0.154163,
+                  "p2_5": 0.273334,
+                  "p50": 0.594999,
+                  "p97_5": 0.883403,
+                  "min": 0.090273,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.547307,
+                  "standard_error": 0.16889,
+                  "p2_5": 0.181818,
+                  "p50": 0.5625,
+                  "p97_5": 0.85,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.977674,
+                  "standard_error": 0.009634,
+                  "p2_5": 0.957333,
+                  "p50": 0.978261,
+                  "p97_5": 0.994351,
+                  "min": 0.937173,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.411316,
+                "standard_error": 0.076548,
+                "p2_5": 0.247504,
+                "p50": 0.417426,
+                "p97_5": 0.546247,
+                "min": 0.05446,
+                "max": 0.648288,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.929993,
+                  "recomputed": 0.929993,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.573461,
+                  "recomputed": 0.573461,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5625,
+                  "recomputed": 0.5625,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.977654,
+                  "recomputed": 0.977654,
+                  "reproduced": true
+                }
+              }
+            },
+            "logistic_regression": {
+              "measured": true,
+              "n_scored": 374,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9305167597765363,
+                "pr_auc": 0.5395978506824534,
+                "sensitivity": 0.75,
+                "specificity": 0.877095
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.931261,
+                  "standard_error": 0.03402,
+                  "p2_5": 0.857538,
+                  "p50": 0.933693,
+                  "p97_5": 0.987955,
+                  "min": 0.778025,
+                  "max": 0.997956
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.538625,
+                  "standard_error": 0.160003,
+                  "p2_5": 0.212859,
+                  "p50": 0.547561,
+                  "p97_5": 0.81999,
+                  "min": 0.094354,
+                  "max": 0.961085
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.746196,
+                  "standard_error": 0.142868,
+                  "p2_5": 0.428571,
+                  "p50": 0.76,
+                  "p97_5": 1.0,
+                  "min": 0.142857,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.877832,
+                  "standard_error": 0.030563,
+                  "p2_5": 0.81284,
+                  "p50": 0.87952,
+                  "p97_5": 0.932594,
+                  "min": 0.75,
+                  "max": 0.962857
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.414148,
+                "standard_error": 0.070998,
+                "p2_5": 0.26578,
+                "p50": 0.417131,
+                "p97_5": 0.546106,
+                "min": 0.146049,
+                "max": 0.648052,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.930517,
+                  "recomputed": 0.930517,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.539598,
+                  "recomputed": 0.539598,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.75,
+                  "recomputed": 0.75,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.877095,
+                  "recomputed": 0.877095,
+                  "reproduced": true
+                }
+              }
+            },
+            "random_forest": {
+              "measured": true,
+              "n_scored": 374,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 0.9404678770949719,
+                "pr_auc": 0.592555906676057,
+                "sensitivity": 0.5,
+                "specificity": 0.986034
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.939592,
+                  "standard_error": 0.030729,
+                  "p2_5": 0.870672,
+                  "p50": 0.942924,
+                  "p97_5": 0.989093,
+                  "min": 0.784226,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.585113,
+                  "standard_error": 0.157348,
+                  "p2_5": 0.224406,
+                  "p50": 0.597663,
+                  "p97_5": 0.857875,
+                  "min": 0.083053,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.483947,
+                  "standard_error": 0.15944,
+                  "p2_5": 0.142857,
+                  "p50": 0.5,
+                  "p97_5": 0.785808,
+                  "min": 0.0,
+                  "max": 1.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.986165,
+                  "standard_error": 0.00884,
+                  "p2_5": 0.966479,
+                  "p50": 0.986911,
+                  "p97_5": 1.0,
+                  "min": 0.951872,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 2000,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.42248,
+                "standard_error": 0.065981,
+                "p2_5": 0.282524,
+                "p50": 0.425929,
+                "p97_5": 0.541754,
+                "min": 0.15225,
+                "max": 0.619074,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 1.0,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 0.940468,
+                  "recomputed": 0.940468,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 0.592556,
+                  "recomputed": 0.592556,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5,
+                  "recomputed": 0.5,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 0.986034,
+                  "recomputed": 0.986034,
+                  "reproduced": true
+                }
+              }
+            }
+          },
+          "measurable": true,
+          "leak_bar_interval": {
+            "roc_auc": {
+              "measured": true,
+              "quantity": "area_only_roc_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.517112,
+              "standard_error": 0.055739,
+              "p2_5": 0.413264,
+              "p50": 0.513972,
+              "p97_5": 0.632762,
+              "min": 0.295368,
+              "max": 0.798949
+            },
+            "pr_auc": {
+              "measured": true,
+              "quantity": "area_only_pr_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 2000,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.057795,
+              "standard_error": 0.020652,
+              "p2_5": 0.025972,
+              "p50": 0.054625,
+              "p97_5": 0.107029,
+              "min": 0.010741,
+              "max": 0.161257
+            }
+          },
+          "leak_bar_anchor_check": {
+            "frozen": 0.5129189944134078,
+            "recomputed": 0.5129189944134078,
+            "reproduced": true
+          }
+        },
+        {
+          "condition": "C_fallback",
+          "description": "Condition C: localisation ran and was rejected, so the documented fallback crop was used. Kept identifiable, never merged into B.",
+          "partition": "test",
+          "n_samples": 7,
+          "n_positive": 2,
+          "n_negative": 5,
+          "n_patients": 6,
+          "n_patients_with_a_positive": 1,
+          "prevalence": 0.285714,
+          "leak_bar_point": {
+            "area_only_roc_auc": 0.39999999999999997,
+            "area_only_pr_auc": 0.3333333333333333,
+            "n_finite_area": 7
+          },
+          "baselines": {
+            "gradient_boosting": {
+              "measured": true,
+              "n_scored": 7,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 1.0,
+                "pr_auc": 1.0,
+                "sensitivity": 0.0,
+                "specificity": 1.0
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.0,
+                  "standard_error": 0.0,
+                  "p2_5": 0.0,
+                  "p50": 0.0,
+                  "p97_5": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 1317,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.599677,
+                "standard_error": 0.181592,
+                "p2_5": 0.245,
+                "p50": 0.6,
+                "p97_5": 0.9,
+                "min": 0.0,
+                "max": 1.0,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.997722,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.0,
+                  "recomputed": 0.0,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                }
+              }
+            },
+            "logistic_regression": {
+              "measured": true,
+              "n_scored": 7,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 1.0,
+                "pr_auc": 1.0,
+                "sensitivity": 0.5,
+                "specificity": 1.0
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.32925,
+                  "standard_error": 0.237166,
+                  "p2_5": 0.0,
+                  "p50": 0.5,
+                  "p97_5": 0.5,
+                  "min": 0.0,
+                  "max": 0.5
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 1317,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.599677,
+                "standard_error": 0.181592,
+                "p2_5": 0.245,
+                "p50": 0.6,
+                "p97_5": 0.9,
+                "min": 0.0,
+                "max": 1.0,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.997722,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.5,
+                  "recomputed": 0.5,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                }
+              }
+            },
+            "random_forest": {
+              "measured": true,
+              "n_scored": 7,
+              "n_not_in_descriptor_cache": 0,
+              "threshold": 0.5,
+              "threshold_source": "baselines.json:screening_threshold (selected on validation)",
+              "point": {
+                "roc_auc": 1.0,
+                "pr_auc": 1.0,
+                "sensitivity": 0.0,
+                "specificity": 1.0
+              },
+              "interval": {
+                "roc_auc": {
+                  "measured": true,
+                  "quantity": "roc_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "pr_auc": {
+                  "measured": true,
+                  "quantity": "pr_auc",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 1317,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                },
+                "sensitivity": {
+                  "measured": true,
+                  "quantity": "sensitivity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 0.0,
+                  "standard_error": 0.0,
+                  "p2_5": 0.0,
+                  "p50": 0.0,
+                  "p97_5": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "specificity": {
+                  "measured": true,
+                  "quantity": "specificity",
+                  "n_draws_requested": 2000,
+                  "n_draws_usable": 2000,
+                  "unit": "patient (resampled with replacement)",
+                  "mean": 1.0,
+                  "standard_error": 0.0,
+                  "p2_5": 1.0,
+                  "p50": 1.0,
+                  "p97_5": 1.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "roc_auc_minus_leak_bar": {
+                "measured": true,
+                "quantity": "roc_auc - area_only_roc_auc (paired)",
+                "n_draws_requested": 2000,
+                "n_draws_usable": 1317,
+                "unit": "patient (resampled with replacement)",
+                "mean": 0.599677,
+                "standard_error": 0.181592,
+                "p2_5": 0.245,
+                "p50": 0.6,
+                "p97_5": 0.9,
+                "min": 0.0,
+                "max": 1.0,
+                "excludes_zero": true,
+                "fraction_of_draws_above_zero": 0.997722,
+                "interpretation": "Positive means the classifier ranked these rows better than ROI area alone on the same resampled patients. An interval containing zero means the condition's headline discrimination is not separable from its crop geometry at this sample size. POST-HOC: descriptive, not a pre-registered test."
+              },
+              "anchor_check": {
+                "roc_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "pr_auc": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                },
+                "sensitivity": {
+                  "frozen": 0.0,
+                  "recomputed": 0.0,
+                  "reproduced": true
+                },
+                "specificity": {
+                  "frozen": 1.0,
+                  "recomputed": 1.0,
+                  "reproduced": true
+                }
+              }
+            }
+          },
+          "measurable": true,
+          "leak_bar_interval": {
+            "roc_auc": {
+              "measured": true,
+              "quantity": "area_only_roc_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 1317,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.400323,
+              "standard_error": 0.181592,
+              "p2_5": 0.1,
+              "p50": 0.4,
+              "p97_5": 0.755,
+              "min": 0.0,
+              "max": 1.0
+            },
+            "pr_auc": {
+              "measured": true,
+              "quantity": "area_only_pr_auc",
+              "n_draws_requested": 2000,
+              "n_draws_usable": 1317,
+              "unit": "patient (resampled with replacement)",
+              "mean": 0.466423,
+              "standard_error": 0.172635,
+              "p2_5": 0.242857,
+              "p50": 0.416667,
+              "p97_5": 0.833333,
+              "min": 0.22619,
+              "max": 1.0
+            }
+          },
+          "leak_bar_anchor_check": {
+            "frozen": 0.39999999999999997,
+            "recomputed": 0.39999999999999997,
+            "reproduced": true
+          }
+        }
+      ]
+    }
+  }
+}

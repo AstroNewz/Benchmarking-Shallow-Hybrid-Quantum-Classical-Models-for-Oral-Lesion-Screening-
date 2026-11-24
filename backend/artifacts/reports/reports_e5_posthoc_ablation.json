@@ -1,0 +1,2412 @@
+{
+  "version": "v1-e5-posthoc-ablation-1",
+  "preregistered": false,
+  "status_note": "POST-HOC. E1's candidate set was frozen before its first fit and nothing here was added to it. These numbers extend E1's ablation coverage and must be reported as a separate, explicitly post-hoc study with their own multiplicity accounting. No p-value is computed and none may be quoted.",
+  "condition": "A_lesion_polygon",
+  "shape": {
+    "n_train": 215,
+    "n_validation": 52,
+    "n_train_positive": 103,
+    "n_validation_positive": 21,
+    "train_prevalence": 0.47907,
+    "validation_prevalence": 0.403846,
+    "n_train_patients": 112,
+    "n_validation_patients": 25,
+    "patient_overlap_train_validation": 0
+  },
+  "blocks": {
+    "H": "handcrafted CIELAB descriptor (163)",
+    "M": "8x8 multiscale grid + centre-vs-surround (456)",
+    "C": "frozen MobileNetV3-Small embedding (576)"
+  },
+  "provenance": {
+    "split_manifest_sha256": "fe45df6d890048756b709e9ddb5144903465930219d44ae7910dbaf3dd1ce629",
+    "descriptor_cache": "C:\\Users\\ISHAN SHUKLA\\Downloads\\Orqis-main\\Orqis-main\\backend\\artifacts\\dataset\\features_handcrafted_lab.npz",
+    "descriptor_dimension": 163,
+    "pixel_cache_version": "v1-pixels-1",
+    "e1_cache_version": "v1-e1-features-1",
+    "e1_cache_dimensions": {
+      "hog": 1764,
+      "texture": 156,
+      "multiscale": 456,
+      "mobilenet": 576
+    },
+    "e1_cache_rows": 2436,
+    "rows_dropped_for_cache_misalignment": {
+      "A_lesion_polygon": {
+        "train": 0,
+        "validation": 0
+      }
+    },
+    "join": "by image id across all three caches; rows missing anywhere are dropped from every candidate, never from one",
+    "descriptor_note": "raw cached 163-dim image descriptor + no reduction (transform=False). The PCA-reduced 8-dim vector is NOT used: comparing candidates against a compressed control would understate C1."
+  },
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "1.26.4"
+  },
+  "seed": 42,
+  "study_a_lattice": {
+    "preregistered": false,
+    "arm_grid": [
+      "logistic",
+      "rbf_svm",
+      "random_forest"
+    ],
+    "arm_grid_note": "identical for every cell, so a cell's score cannot differ from another's because it was given a different classifier search",
+    "cv_note": "5-fold StratifiedGroupKFold on TRAIN, grouped by patient, scoring average_precision",
+    "n_cells": 7,
+    "n_tests": 21,
+    "multiplicity_note": "7 cells x 3 arms = 21 fits on one condition, chosen AFTER E1's results were seen. No p-value is computed here and none may be quoted from this study; the bootstrap intervals are descriptive.",
+    "cells": {
+      "L_H": {
+        "candidate": "L_H",
+        "label": "POST-HOC lattice cell {H}: handcrafted CIELAB descriptor (163)",
+        "gap_tested": null,
+        "input_dimension": 163,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.01
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.630275,
+              "0.01": 0.668228,
+              "0.1": 0.615239,
+              "1.0": 0.57714,
+              "10.0": 0.565447,
+              "100.0": 0.565637
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.6682280623594472,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.8,
+              "precision": 0.777778,
+              "recall": 0.815534,
+              "sensitivity": 0.815534,
+              "specificity": 0.785714,
+              "f1": 0.796209,
+              "balanced_accuracy": 0.800624,
+              "roc_auc": 0.892077,
+              "pr_auc": 0.885841,
+              "brier": 0.160764,
+              "log_loss": 0.499528,
+              "ece": 0.144969,
+              "mean_predicted": 0.494808,
+              "confusion_matrix": {
+                "true_positive": 84,
+                "false_positive": 24,
+                "true_negative": 88,
+                "false_negative": 19,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.788462,
+              "precision": 0.678571,
+              "recall": 0.904762,
+              "sensitivity": 0.904762,
+              "specificity": 0.709677,
+              "f1": 0.77551,
+              "balanced_accuracy": 0.80722,
+              "roc_auc": 0.913978,
+              "pr_auc": 0.840895,
+              "brier": 0.174965,
+              "log_loss": 0.532789,
+              "ece": 0.279104,
+              "mean_predicted": 0.504193,
+              "confusion_matrix": {
+                "true_positive": 19,
+                "false_positive": 9,
+                "true_negative": 22,
+                "false_negative": 2,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.840895,
+            "fit_seconds": 0.732,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 1.0,
+              "gamma": 0.49320517,
+              "median_train_squared_distance": 2.02755376
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.554765,
+              "0.01": 0.560066,
+              "0.1": 0.637685,
+              "1.0": 0.665674,
+              "10.0": 0.658061,
+              "100.0": 0.660552
+            },
+            "n_support_vectors": 195,
+            "train_cv_pr_auc": 0.6656739323514792,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.632558,
+              "precision": 0.625,
+              "recall": 0.582524,
+              "sensitivity": 0.582524,
+              "specificity": 0.678571,
+              "f1": 0.603015,
+              "balanced_accuracy": 0.630548,
+              "roc_auc": 0.699202,
+              "pr_auc": 0.665674,
+              "brier": 0.219391,
+              "log_loss": 0.627407,
+              "ece": 0.072231,
+              "mean_predicted": 0.479066,
+              "confusion_matrix": {
+                "true_positive": 60,
+                "false_positive": 36,
+                "true_negative": 76,
+                "false_negative": 43,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.807692,
+              "precision": 0.72,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.774194,
+              "f1": 0.782609,
+              "balanced_accuracy": 0.815668,
+              "roc_auc": 0.930876,
+              "pr_auc": 0.897149,
+              "brier": 0.156962,
+              "log_loss": 0.493729,
+              "ece": 0.236677,
+              "mean_predicted": 0.486081,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 7,
+                "true_negative": 24,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.897149,
+            "fit_seconds": 0.1,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 300,
+              "max_depth": 6,
+              "min_samples_leaf": 2
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.677535,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.686619,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.684283
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.686619256700242,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.064222,
+              "log_loss": 0.282202,
+              "ece": 0.241952,
+              "mean_predicted": 0.492598,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.865385,
+              "precision": 0.791667,
+              "recall": 0.904762,
+              "sensitivity": 0.904762,
+              "specificity": 0.83871,
+              "f1": 0.844444,
+              "balanced_accuracy": 0.871736,
+              "roc_auc": 0.940092,
+              "pr_auc": 0.884779,
+              "brier": 0.166207,
+              "log_loss": 0.518071,
+              "ece": 0.245853,
+              "mean_predicted": 0.476604,
+              "confusion_matrix": {
+                "true_positive": 19,
+                "false_positive": 5,
+                "true_negative": 26,
+                "false_negative": 2,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.884779,
+            "fit_seconds": 16.823,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "rbf_svm",
+        "best_validation_pr_auc": 0.897149,
+        "best_linear_validation_pr_auc": 0.840895,
+        "best_nonlinear_validation_pr_auc": 0.897149,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.894311,
+          "standard_error": 0.076222,
+          "p2_5": 0.703832,
+          "p97_5": 0.990855
+        },
+        "subset": [
+          "H"
+        ],
+        "e1_equivalent": "C1",
+        "preregistered": false
+      },
+      "L_M": {
+        "candidate": "L_M",
+        "label": "POST-HOC lattice cell {M}: 8x8 multiscale grid + centre-vs-surround (456)",
+        "gap_tested": null,
+        "input_dimension": 456,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.65004,
+              "0.01": 0.672677,
+              "0.1": 0.680451,
+              "1.0": 0.66504,
+              "10.0": 0.651149,
+              "100.0": 0.664173
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.6804506344202763,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.990698,
+              "precision": 0.980952,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 0.982143,
+              "f1": 0.990385,
+              "balanced_accuracy": 0.991071,
+              "roc_auc": 0.999567,
+              "pr_auc": 0.999524,
+              "brier": 0.027682,
+              "log_loss": 0.145797,
+              "ece": 0.117216,
+              "mean_predicted": 0.484497,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 2,
+                "true_negative": 110,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.75,
+              "precision": 0.642857,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.677419,
+              "f1": 0.734694,
+              "balanced_accuracy": 0.767281,
+              "roc_auc": 0.814132,
+              "pr_auc": 0.6776,
+              "brier": 0.185448,
+              "log_loss": 0.690808,
+              "ece": 0.208089,
+              "mean_predicted": 0.510921,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 10,
+                "true_negative": 21,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.6776,
+            "fit_seconds": 0.972,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 10.0,
+              "gamma": 0.4948591,
+              "median_train_squared_distance": 2.02077722
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.565454,
+              "0.01": 0.56606,
+              "0.1": 0.626514,
+              "1.0": 0.676595,
+              "10.0": 0.7142,
+              "100.0": 0.705007
+            },
+            "n_support_vectors": 196,
+            "train_cv_pr_auc": 0.7141996136438526,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.67907,
+              "precision": 0.673469,
+              "recall": 0.640777,
+              "sensitivity": 0.640777,
+              "specificity": 0.714286,
+              "f1": 0.656716,
+              "balanced_accuracy": 0.677531,
+              "roc_auc": 0.721654,
+              "pr_auc": 0.7142,
+              "brier": 0.211901,
+              "log_loss": 0.610518,
+              "ece": 0.045574,
+              "mean_predicted": 0.479066,
+              "confusion_matrix": {
+                "true_positive": 66,
+                "false_positive": 32,
+                "true_negative": 80,
+                "false_negative": 37,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.769231,
+              "precision": 0.666667,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.709677,
+              "f1": 0.75,
+              "balanced_accuracy": 0.78341,
+              "roc_auc": 0.920123,
+              "pr_auc": 0.903655,
+              "brier": 0.140313,
+              "log_loss": 0.449805,
+              "ece": 0.188109,
+              "mean_predicted": 0.465985,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 9,
+                "true_negative": 22,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.903655,
+            "fit_seconds": 0.103,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 600,
+              "max_depth": 12,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.718904,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.708947,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.724707
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7247066538726179,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.026972,
+              "log_loss": 0.172917,
+              "ece": 0.157479,
+              "mean_predicted": 0.48852,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.884615,
+              "precision": 0.894737,
+              "recall": 0.809524,
+              "sensitivity": 0.809524,
+              "specificity": 0.935484,
+              "f1": 0.85,
+              "balanced_accuracy": 0.872504,
+              "roc_auc": 0.935484,
+              "pr_auc": 0.882261,
+              "brier": 0.156825,
+              "log_loss": 0.497271,
+              "ece": 0.251073,
+              "mean_predicted": 0.44998,
+              "confusion_matrix": {
+                "true_positive": 17,
+                "false_positive": 2,
+                "true_negative": 29,
+                "false_negative": 4,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.882261,
+            "fit_seconds": 25.144,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "rbf_svm",
+        "best_validation_pr_auc": 0.903655,
+        "best_linear_validation_pr_auc": 0.6776,
+        "best_nonlinear_validation_pr_auc": 0.903655,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.905832,
+          "standard_error": 0.050955,
+          "p2_5": 0.779848,
+          "p97_5": 0.974691
+        },
+        "subset": [
+          "M"
+        ],
+        "e1_equivalent": null,
+        "preregistered": false
+      },
+      "L_C": {
+        "candidate": "L_C",
+        "label": "POST-HOC lattice cell {C}: frozen MobileNetV3-Small embedding (576)",
+        "gap_tested": null,
+        "input_dimension": 576,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.001
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.735408,
+              "0.01": 0.73181,
+              "0.1": 0.728213,
+              "1.0": 0.718068,
+              "10.0": 0.712302,
+              "100.0": 0.719543
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7354080545894004,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.776744,
+              "precision": 0.73913,
+              "recall": 0.825243,
+              "sensitivity": 0.825243,
+              "specificity": 0.732143,
+              "f1": 0.779817,
+              "balanced_accuracy": 0.778693,
+              "roc_auc": 0.880895,
+              "pr_auc": 0.87025,
+              "brier": 0.177447,
+              "log_loss": 0.5393,
+              "ece": 0.157343,
+              "mean_predicted": 0.496067,
+              "confusion_matrix": {
+                "true_positive": 85,
+                "false_positive": 30,
+                "true_negative": 82,
+                "false_negative": 18,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.807692,
+              "precision": 0.72,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.774194,
+              "f1": 0.782609,
+              "balanced_accuracy": 0.815668,
+              "roc_auc": 0.913978,
+              "pr_auc": 0.892227,
+              "brier": 0.173639,
+              "log_loss": 0.530615,
+              "ece": 0.192391,
+              "mean_predicted": 0.461965,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 7,
+                "true_negative": 24,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.892227,
+            "fit_seconds": 0.893,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 100.0,
+              "gamma": 0.49269714,
+              "median_train_squared_distance": 2.0296444
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.609962,
+              "0.01": 0.611748,
+              "0.1": 0.707455,
+              "1.0": 0.736108,
+              "10.0": 0.769505,
+              "100.0": 0.769927
+            },
+            "n_support_vectors": 192,
+            "train_cv_pr_auc": 0.7699265726388005,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.67907,
+              "precision": 0.67,
+              "recall": 0.650485,
+              "sensitivity": 0.650485,
+              "specificity": 0.705357,
+              "f1": 0.660099,
+              "balanced_accuracy": 0.677921,
+              "roc_auc": 0.780947,
+              "pr_auc": 0.769927,
+              "brier": 0.190635,
+              "log_loss": 0.560181,
+              "ece": 0.07627,
+              "mean_predicted": 0.479108,
+              "confusion_matrix": {
+                "true_positive": 67,
+                "false_positive": 33,
+                "true_negative": 79,
+                "false_negative": 36,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.75,
+              "precision": 0.681818,
+              "recall": 0.714286,
+              "sensitivity": 0.714286,
+              "specificity": 0.774194,
+              "f1": 0.697674,
+              "balanced_accuracy": 0.74424,
+              "roc_auc": 0.831029,
+              "pr_auc": 0.781035,
+              "brier": 0.170634,
+              "log_loss": 0.511716,
+              "ece": 0.178657,
+              "mean_predicted": 0.442586,
+              "confusion_matrix": {
+                "true_positive": 15,
+                "false_positive": 7,
+                "true_negative": 24,
+                "false_negative": 6,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.781035,
+            "fit_seconds": 0.128,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 600,
+              "max_depth": 12,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.694083,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.697973,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.726245
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7262450980915239,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.028604,
+              "log_loss": 0.179305,
+              "ece": 0.162911,
+              "mean_predicted": 0.48639,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.788462,
+              "precision": 0.727273,
+              "recall": 0.761905,
+              "sensitivity": 0.761905,
+              "specificity": 0.806452,
+              "f1": 0.744186,
+              "balanced_accuracy": 0.784178,
+              "roc_auc": 0.889401,
+              "pr_auc": 0.854325,
+              "brier": 0.175945,
+              "log_loss": 0.535974,
+              "ece": 0.171864,
+              "mean_predicted": 0.446526,
+              "confusion_matrix": {
+                "true_positive": 16,
+                "false_positive": 6,
+                "true_negative": 25,
+                "false_negative": 5,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.854325,
+            "fit_seconds": 26.226,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "logistic",
+        "best_validation_pr_auc": 0.892227,
+        "best_linear_validation_pr_auc": 0.892227,
+        "best_nonlinear_validation_pr_auc": 0.854325,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.891615,
+          "standard_error": 0.069851,
+          "p2_5": 0.719245,
+          "p97_5": 0.984228
+        },
+        "subset": [
+          "C"
+        ],
+        "e1_equivalent": "C6",
+        "preregistered": false
+      },
+      "L_HM": {
+        "candidate": "L_HM",
+        "label": "POST-HOC lattice cell {H,M}: handcrafted CIELAB descriptor (163) + 8x8 multiscale grid + centre-vs-surround (456)",
+        "gap_tested": null,
+        "input_dimension": 619,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.66128,
+              "0.01": 0.696049,
+              "0.1": 0.704081,
+              "1.0": 0.698823,
+              "10.0": 0.687999,
+              "100.0": 0.686385
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7040813336168756,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.018225,
+              "log_loss": 0.113374,
+              "ece": 0.10236,
+              "mean_predicted": 0.483439,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.826923,
+              "precision": 0.730769,
+              "recall": 0.904762,
+              "sensitivity": 0.904762,
+              "specificity": 0.774194,
+              "f1": 0.808511,
+              "balanced_accuracy": 0.839478,
+              "roc_auc": 0.892473,
+              "pr_auc": 0.809348,
+              "brier": 0.137966,
+              "log_loss": 0.456709,
+              "ece": 0.121504,
+              "mean_predicted": 0.486705,
+              "confusion_matrix": {
+                "true_positive": 19,
+                "false_positive": 7,
+                "true_negative": 24,
+                "false_negative": 2,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.809348,
+            "fit_seconds": 0.865,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 10.0,
+              "gamma": 0.49479669,
+              "median_train_squared_distance": 2.0210321
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.56076,
+              "0.01": 0.563479,
+              "0.1": 0.62652,
+              "1.0": 0.687004,
+              "10.0": 0.737878,
+              "100.0": 0.731447
+            },
+            "n_support_vectors": 194,
+            "train_cv_pr_auc": 0.7378775238700304,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.683721,
+              "precision": 0.673267,
+              "recall": 0.660194,
+              "sensitivity": 0.660194,
+              "specificity": 0.705357,
+              "f1": 0.666667,
+              "balanced_accuracy": 0.682776,
+              "roc_auc": 0.755461,
+              "pr_auc": 0.737878,
+              "brier": 0.200128,
+              "log_loss": 0.584366,
+              "ece": 0.033334,
+              "mean_predicted": 0.479069,
+              "confusion_matrix": {
+                "true_positive": 68,
+                "false_positive": 33,
+                "true_negative": 79,
+                "false_negative": 35,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.903846,
+              "precision": 0.863636,
+              "recall": 0.904762,
+              "sensitivity": 0.904762,
+              "specificity": 0.903226,
+              "f1": 0.883721,
+              "balanced_accuracy": 0.903994,
+              "roc_auc": 0.961598,
+              "pr_auc": 0.957433,
+              "brier": 0.116165,
+              "log_loss": 0.392185,
+              "ece": 0.210019,
+              "mean_predicted": 0.457697,
+              "confusion_matrix": {
+                "true_positive": 19,
+                "false_positive": 3,
+                "true_negative": 28,
+                "false_negative": 2,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.957433,
+            "fit_seconds": 0.123,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 600,
+              "max_depth": 12,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.737629,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.726973,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.744661
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7446606834992527,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.027229,
+              "log_loss": 0.17366,
+              "ece": 0.158048,
+              "mean_predicted": 0.487478,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.884615,
+              "precision": 0.857143,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.903226,
+              "f1": 0.857143,
+              "balanced_accuracy": 0.880184,
+              "roc_auc": 0.930876,
+              "pr_auc": 0.850837,
+              "brier": 0.16039,
+              "log_loss": 0.505079,
+              "ece": 0.268755,
+              "mean_predicted": 0.454288,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 3,
+                "true_negative": 28,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.850837,
+            "fit_seconds": 26.38,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "rbf_svm",
+        "best_validation_pr_auc": 0.957433,
+        "best_linear_validation_pr_auc": 0.809348,
+        "best_nonlinear_validation_pr_auc": 0.957433,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.957796,
+          "standard_error": 0.030887,
+          "p2_5": 0.881167,
+          "p97_5": 0.996324
+        },
+        "subset": [
+          "H",
+          "M"
+        ],
+        "e1_equivalent": "C5",
+        "preregistered": false
+      },
+      "L_CH": {
+        "candidate": "L_CH",
+        "label": "POST-HOC lattice cell {H,C}: handcrafted CIELAB descriptor (163) + frozen MobileNetV3-Small embedding (576)",
+        "gap_tested": null,
+        "input_dimension": 739,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.01
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.747792,
+              "0.01": 0.760387,
+              "0.1": 0.750384,
+              "1.0": 0.733764,
+              "10.0": 0.726074,
+              "100.0": 0.724757
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7603869008159776,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.95814,
+              "precision": 0.943396,
+              "recall": 0.970874,
+              "sensitivity": 0.970874,
+              "specificity": 0.946429,
+              "f1": 0.956938,
+              "balanced_accuracy": 0.958651,
+              "roc_auc": 0.992372,
+              "pr_auc": 0.990787,
+              "brier": 0.07017,
+              "log_loss": 0.274928,
+              "ece": 0.176981,
+              "mean_predicted": 0.488529,
+              "confusion_matrix": {
+                "true_positive": 100,
+                "false_positive": 6,
+                "true_negative": 106,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.846154,
+              "precision": 0.782609,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.83871,
+              "f1": 0.818182,
+              "balanced_accuracy": 0.847926,
+              "roc_auc": 0.913978,
+              "pr_auc": 0.869767,
+              "brier": 0.130019,
+              "log_loss": 0.414886,
+              "ece": 0.148282,
+              "mean_predicted": 0.449063,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 5,
+                "true_negative": 26,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.869767,
+            "fit_seconds": 0.491,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 10.0,
+              "gamma": 0.49314603,
+              "median_train_squared_distance": 2.02779692
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.616329,
+              "0.01": 0.619281,
+              "0.1": 0.722358,
+              "1.0": 0.754373,
+              "10.0": 0.776145,
+              "100.0": 0.771632
+            },
+            "n_support_vectors": 193,
+            "train_cv_pr_auc": 0.7761449841752834,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.730233,
+              "precision": 0.714286,
+              "recall": 0.728155,
+              "sensitivity": 0.728155,
+              "specificity": 0.732143,
+              "f1": 0.721154,
+              "balanced_accuracy": 0.730149,
+              "roc_auc": 0.809639,
+              "pr_auc": 0.776145,
+              "brier": 0.178896,
+              "log_loss": 0.536752,
+              "ece": 0.112622,
+              "mean_predicted": 0.479099,
+              "confusion_matrix": {
+                "true_positive": 75,
+                "false_positive": 30,
+                "true_negative": 82,
+                "false_negative": 28,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.788462,
+              "precision": 0.727273,
+              "recall": 0.761905,
+              "sensitivity": 0.761905,
+              "specificity": 0.806452,
+              "f1": 0.744186,
+              "balanced_accuracy": 0.784178,
+              "roc_auc": 0.869432,
+              "pr_auc": 0.814186,
+              "brier": 0.148626,
+              "log_loss": 0.460618,
+              "ece": 0.211368,
+              "mean_predicted": 0.442653,
+              "confusion_matrix": {
+                "true_positive": 16,
+                "false_positive": 6,
+                "true_negative": 25,
+                "false_negative": 5,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.814186,
+            "fit_seconds": 0.115,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 300,
+              "max_depth": null,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.750948,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.741139,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.741294
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7509477945462639,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.027325,
+              "log_loss": 0.174448,
+              "ece": 0.158822,
+              "mean_predicted": 0.487225,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.826923,
+              "precision": 0.772727,
+              "recall": 0.809524,
+              "sensitivity": 0.809524,
+              "specificity": 0.83871,
+              "f1": 0.790698,
+              "balanced_accuracy": 0.824117,
+              "roc_auc": 0.917051,
+              "pr_auc": 0.897996,
+              "brier": 0.163308,
+              "log_loss": 0.508449,
+              "ece": 0.195385,
+              "mean_predicted": 0.451154,
+              "confusion_matrix": {
+                "true_positive": 17,
+                "false_positive": 5,
+                "true_negative": 26,
+                "false_negative": 4,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.897996,
+            "fit_seconds": 21.921,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "random_forest",
+        "best_validation_pr_auc": 0.897996,
+        "best_linear_validation_pr_auc": 0.869767,
+        "best_nonlinear_validation_pr_auc": 0.897996,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.894638,
+          "standard_error": 0.071692,
+          "p2_5": 0.708307,
+          "p97_5": 0.988101
+        },
+        "subset": [
+          "C",
+          "H"
+        ],
+        "e1_equivalent": null,
+        "preregistered": false
+      },
+      "L_CM": {
+        "candidate": "L_CM",
+        "label": "POST-HOC lattice cell {M,C}: 8x8 multiscale grid + centre-vs-surround (456) + frozen MobileNetV3-Small embedding (576)",
+        "gap_tested": null,
+        "input_dimension": 1032,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.01
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.754269,
+              "0.01": 0.764038,
+              "0.1": 0.753916,
+              "1.0": 0.739456,
+              "10.0": 0.733179,
+              "100.0": 0.733143
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7640376229703213,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.976744,
+              "precision": 0.962264,
+              "recall": 0.990291,
+              "sensitivity": 0.990291,
+              "specificity": 0.964286,
+              "f1": 0.976077,
+              "balanced_accuracy": 0.977288,
+              "roc_auc": 0.997226,
+              "pr_auc": 0.99681,
+              "brier": 0.053158,
+              "log_loss": 0.229209,
+              "ece": 0.166131,
+              "mean_predicted": 0.487172,
+              "confusion_matrix": {
+                "true_positive": 102,
+                "false_positive": 4,
+                "true_negative": 108,
+                "false_negative": 1,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.826923,
+              "precision": 0.75,
+              "recall": 0.857143,
+              "sensitivity": 0.857143,
+              "specificity": 0.806452,
+              "f1": 0.8,
+              "balanced_accuracy": 0.831797,
+              "roc_auc": 0.935484,
+              "pr_auc": 0.919827,
+              "brier": 0.118568,
+              "log_loss": 0.382044,
+              "ece": 0.142861,
+              "mean_predicted": 0.470559,
+              "confusion_matrix": {
+                "true_positive": 18,
+                "false_positive": 6,
+                "true_negative": 25,
+                "false_negative": 3,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.919827,
+            "fit_seconds": 1.029,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 10.0,
+              "gamma": 0.49369638,
+              "median_train_squared_distance": 2.02553642
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.614866,
+              "0.01": 0.620987,
+              "0.1": 0.715295,
+              "1.0": 0.746776,
+              "10.0": 0.763658,
+              "100.0": 0.754865
+            },
+            "n_support_vectors": 196,
+            "train_cv_pr_auc": 0.7636583364602945,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.739535,
+              "precision": 0.732673,
+              "recall": 0.718447,
+              "sensitivity": 0.718447,
+              "specificity": 0.758929,
+              "f1": 0.72549,
+              "balanced_accuracy": 0.738688,
+              "roc_auc": 0.793516,
+              "pr_auc": 0.763658,
+              "brier": 0.186177,
+              "log_loss": 0.554378,
+              "ece": 0.059578,
+              "mean_predicted": 0.479122,
+              "confusion_matrix": {
+                "true_positive": 74,
+                "false_positive": 27,
+                "true_negative": 85,
+                "false_negative": 29,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.807692,
+              "precision": 0.73913,
+              "recall": 0.809524,
+              "sensitivity": 0.809524,
+              "specificity": 0.806452,
+              "f1": 0.772727,
+              "balanced_accuracy": 0.807988,
+              "roc_auc": 0.913978,
+              "pr_auc": 0.890139,
+              "brier": 0.131221,
+              "log_loss": 0.420446,
+              "ece": 0.154858,
+              "mean_predicted": 0.455456,
+              "confusion_matrix": {
+                "true_positive": 17,
+                "false_positive": 6,
+                "true_negative": 25,
+                "false_negative": 4,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.890139,
+            "fit_seconds": 0.121,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 600,
+              "max_depth": 12,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.755175,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.761163,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.767376
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7673757739896208,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.02728,
+              "log_loss": 0.175123,
+              "ece": 0.159549,
+              "mean_predicted": 0.487122,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.865385,
+              "precision": 0.888889,
+              "recall": 0.761905,
+              "sensitivity": 0.761905,
+              "specificity": 0.935484,
+              "f1": 0.820513,
+              "balanced_accuracy": 0.848694,
+              "roc_auc": 0.925499,
+              "pr_auc": 0.902775,
+              "brier": 0.158397,
+              "log_loss": 0.500106,
+              "ece": 0.230923,
+              "mean_predicted": 0.44109,
+              "confusion_matrix": {
+                "true_positive": 16,
+                "false_positive": 2,
+                "true_negative": 29,
+                "false_negative": 5,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.902775,
+            "fit_seconds": 45.477,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "logistic",
+        "best_validation_pr_auc": 0.919827,
+        "best_linear_validation_pr_auc": 0.919827,
+        "best_nonlinear_validation_pr_auc": 0.902775,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.918235,
+          "standard_error": 0.055176,
+          "p2_5": 0.777537,
+          "p97_5": 0.988313
+        },
+        "subset": [
+          "C",
+          "M"
+        ],
+        "e1_equivalent": null,
+        "preregistered": false
+      },
+      "L_CHM": {
+        "candidate": "L_CHM",
+        "label": "POST-HOC lattice cell {H,M,C}: handcrafted CIELAB descriptor (163) + 8x8 multiscale grid + centre-vs-surround (456) + frozen MobileNetV3-Small embedding (576)",
+        "gap_tested": null,
+        "input_dimension": 1195,
+        "n_train": 215,
+        "n_validation": 52,
+        "standardisation": "z-scored with TRAIN mean/scale only",
+        "arms": {
+          "logistic": {
+            "classifier": "logistic_regression",
+            "kernel": null,
+            "is_linear": true,
+            "hyperparameters": {
+              "C": 0.01
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.754216,
+              "0.01": 0.774924,
+              "0.1": 0.7745,
+              "1.0": 0.758966,
+              "10.0": 0.75754,
+              "100.0": 0.75727
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7749237055117247,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.976744,
+              "precision": 0.962264,
+              "recall": 0.990291,
+              "sensitivity": 0.990291,
+              "specificity": 0.964286,
+              "f1": 0.976077,
+              "balanced_accuracy": 0.977288,
+              "roc_auc": 0.99896,
+              "pr_auc": 0.998874,
+              "brier": 0.047297,
+              "log_loss": 0.212553,
+              "ece": 0.158393,
+              "mean_predicted": 0.486662,
+              "confusion_matrix": {
+                "true_positive": 102,
+                "false_positive": 4,
+                "true_negative": 108,
+                "false_negative": 1,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.846154,
+              "precision": 0.76,
+              "recall": 0.904762,
+              "sensitivity": 0.904762,
+              "specificity": 0.806452,
+              "f1": 0.826087,
+              "balanced_accuracy": 0.855607,
+              "roc_auc": 0.933948,
+              "pr_auc": 0.913038,
+              "brier": 0.11062,
+              "log_loss": 0.361332,
+              "ece": 0.119337,
+              "mean_predicted": 0.466155,
+              "confusion_matrix": {
+                "true_positive": 19,
+                "false_positive": 6,
+                "true_negative": 25,
+                "false_negative": 2,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.913038,
+            "fit_seconds": 1.758,
+            "calibration_note": "logistic outputs probabilities directly; no Platt map needed"
+          },
+          "rbf_svm": {
+            "classifier": "svm",
+            "kernel": "rbf",
+            "is_linear": false,
+            "hyperparameters": {
+              "C": 10.0,
+              "gamma": 0.49369504,
+              "median_train_squared_distance": 2.02554194
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "0.001": 0.612191,
+              "0.01": 0.617627,
+              "0.1": 0.711255,
+              "1.0": 0.74667,
+              "10.0": 0.7768,
+              "100.0": 0.77187
+            },
+            "n_support_vectors": 198,
+            "train_cv_pr_auc": 0.7767995677527877,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 0.75814,
+              "precision": 0.747573,
+              "recall": 0.747573,
+              "sensitivity": 0.747573,
+              "specificity": 0.767857,
+              "f1": 0.747573,
+              "balanced_accuracy": 0.757715,
+              "roc_auc": 0.803311,
+              "pr_auc": 0.7768,
+              "brier": 0.181296,
+              "log_loss": 0.543266,
+              "ece": 0.086198,
+              "mean_predicted": 0.47913,
+              "confusion_matrix": {
+                "true_positive": 77,
+                "false_positive": 26,
+                "true_negative": 86,
+                "false_negative": 26,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.826923,
+              "precision": 0.772727,
+              "recall": 0.809524,
+              "sensitivity": 0.809524,
+              "specificity": 0.83871,
+              "f1": 0.790698,
+              "balanced_accuracy": 0.824117,
+              "roc_auc": 0.912442,
+              "pr_auc": 0.881537,
+              "brier": 0.12579,
+              "log_loss": 0.405756,
+              "ece": 0.17883,
+              "mean_predicted": 0.453516,
+              "confusion_matrix": {
+                "true_positive": 17,
+                "false_positive": 5,
+                "true_negative": 26,
+                "false_negative": 4,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.881537,
+            "fit_seconds": 0.247,
+            "calibration_note": "probabilities from a 1-D logistic map fitted on out-of-fold TRAIN decision values; no validation row contributed to it"
+          },
+          "random_forest": {
+            "classifier": "random_forest",
+            "kernel": null,
+            "is_linear": false,
+            "hyperparameters": {
+              "n_estimators": 600,
+              "max_depth": 12,
+              "min_samples_leaf": 1
+            },
+            "selected_on": "out-of-fold average precision inside TRAIN only",
+            "cv_average_precision_by_setting": {
+              "{'n_estimators': 300, 'max_depth': None, 'min_samples_leaf': 1}": 0.739749,
+              "{'n_estimators': 300, 'max_depth': 6, 'min_samples_leaf': 2}": 0.748403,
+              "{'n_estimators': 600, 'max_depth': 12, 'min_samples_leaf': 1}": 0.760268
+            },
+            "n_support_vectors": null,
+            "train_cv_pr_auc": 0.7602684940704085,
+            "train_in_sample_metrics": {
+              "n_samples": 215,
+              "n_positive": 103,
+              "n_negative": 112,
+              "prevalence": 0.47907,
+              "threshold": 0.5,
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1": 1.0,
+              "balanced_accuracy": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier": 0.02635,
+              "log_loss": 0.172182,
+              "ece": 0.157187,
+              "mean_predicted": 0.487328,
+              "confusion_matrix": {
+                "true_positive": 103,
+                "false_positive": 0,
+                "true_negative": 112,
+                "false_negative": 0,
+                "threshold": 0.5
+              }
+            },
+            "validation_metrics": {
+              "n_samples": 52,
+              "n_positive": 21,
+              "n_negative": 31,
+              "prevalence": 0.403846,
+              "threshold": 0.5,
+              "accuracy": 0.846154,
+              "precision": 0.842105,
+              "recall": 0.761905,
+              "sensitivity": 0.761905,
+              "specificity": 0.903226,
+              "f1": 0.8,
+              "balanced_accuracy": 0.832565,
+              "roc_auc": 0.930876,
+              "pr_auc": 0.915414,
+              "brier": 0.159541,
+              "log_loss": 0.502518,
+              "ece": 0.213013,
+              "mean_predicted": 0.451006,
+              "confusion_matrix": {
+                "true_positive": 16,
+                "false_positive": 3,
+                "true_negative": 28,
+                "false_negative": 5,
+                "threshold": 0.5
+              }
+            },
+            "validation_pr_auc": 0.915414,
+            "fit_seconds": 52.119,
+            "calibration_note": "tree ensembles output probabilities directly; no Platt map needed"
+          }
+        },
+        "arm_failures": {},
+        "best_arm": "random_forest",
+        "best_validation_pr_auc": 0.915414,
+        "best_linear_validation_pr_auc": 0.913038,
+        "best_nonlinear_validation_pr_auc": 0.915414,
+        "n_linear_arms": 1,
+        "n_nonlinear_arms": 2,
+        "bootstrap": {
+          "measured": true,
+          "n_draws_requested": 2000,
+          "n_draws_usable": 2000,
+          "unit": "patient (resampled with replacement)",
+          "mean": 0.915621,
+          "standard_error": 0.058326,
+          "p2_5": 0.768402,
+          "p97_5": 0.993942
+        },
+        "subset": [
+          "C",
+          "H",
+          "M"
+        ],
+        "e1_equivalent": "C7",
+        "preregistered": false
+      }
+    },
+    "marginal_contributions": {
+      "per_block": {
+        "H": [
+          {
+            "over": "M",
+            "from": 0.903655,
+            "to": 0.957433,
+            "delta": 0.053778
+          },
+          {
+            "over": "C",
+            "from": 0.892227,
+            "to": 0.897996,
+            "delta": 0.005769
+          },
+          {
+            "over": "CM",
+            "from": 0.919827,
+            "to": 0.915414,
+            "delta": -0.004413
+          }
+        ],
+        "M": [
+          {
+            "over": "H",
+            "from": 0.897149,
+            "to": 0.957433,
+            "delta": 0.060284
+          },
+          {
+            "over": "C",
+            "from": 0.892227,
+            "to": 0.919827,
+            "delta": 0.0276
+          },
+          {
+            "over": "CH",
+            "from": 0.897996,
+            "to": 0.915414,
+            "delta": 0.017418
+          }
+        ],
+        "C": [
+          {
+            "over": "H",
+            "from": 0.897149,
+            "to": 0.897996,
+            "delta": 0.000847
+          },
+          {
+            "over": "M",
+            "from": 0.903655,
+            "to": 0.919827,
+            "delta": 0.016172
+          },
+          {
+            "over": "HM",
+            "from": 0.957433,
+            "to": 0.915414,
+            "delta": -0.042019
+          }
+        ]
+      },
+      "mean_marginal_delta": {
+        "H": 0.018378,
+        "M": 0.035101,
+        "C": -0.008333
+      },
+      "note": "mean over the non-empty subsets each block can be added to. The singleton model (block alone vs nothing) is excluded because no empty-feature model was fitted, so these are means over 2 of the 3 Shapley coalitions and are NOT exact Shapley values."
+    }
+  },
+  "study_b_split_sensitivity": {
+    "preregistered": false,
+    "n_seeds_requested": 10,
+    "n_seeds_completed": 10,
+    "resplit_seeds": [
+      11,
+      23,
+      42,
+      57,
+      64,
+      71,
+      88,
+      95,
+      103,
+      117
+    ],
+    "train_fraction": 0.805243,
+    "pool": {
+      "n_rows": 267,
+      "n_positive": 124,
+      "n_patients": 137,
+      "source": "frozen TRAIN + frozen VALIDATION of the primary condition",
+      "test_partition_touched": false
+    },
+    "per_seed": [
+      {
+        "resplit_seed": 11,
+        "shape": {
+          "n_train": 218,
+          "n_validation": 49,
+          "n_train_positive": 103,
+          "n_validation_positive": 21,
+          "train_prevalence": 0.472477,
+          "validation_prevalence": 0.428571,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.735028,
+          "L_M": 0.838392,
+          "L_C": 0.741501,
+          "L_HM": 0.832863,
+          "L_CH": 0.783157,
+          "L_CM": 0.838772,
+          "L_CHM": 0.832316
+        },
+        "best_arm": {
+          "L_H": "random_forest",
+          "L_M": "rbf_svm",
+          "L_C": "random_forest",
+          "L_HM": "rbf_svm",
+          "L_CH": "random_forest",
+          "L_CM": "random_forest",
+          "L_CHM": "random_forest"
+        }
+      },
+      {
+        "resplit_seed": 23,
+        "shape": {
+          "n_train": 217,
+          "n_validation": 50,
+          "n_train_positive": 100,
+          "n_validation_positive": 24,
+          "train_prevalence": 0.460829,
+          "validation_prevalence": 0.48,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.751149,
+          "L_M": 0.791657,
+          "L_C": 0.733785,
+          "L_HM": 0.821571,
+          "L_CH": 0.802519,
+          "L_CM": 0.816247,
+          "L_CHM": 0.805194
+        },
+        "best_arm": {
+          "L_H": "random_forest",
+          "L_M": "rbf_svm",
+          "L_C": "logistic",
+          "L_HM": "logistic",
+          "L_CH": "logistic",
+          "L_CM": "logistic",
+          "L_CHM": "rbf_svm"
+        }
+      },
+      {
+        "resplit_seed": 42,
+        "shape": {
+          "n_train": 215,
+          "n_validation": 52,
+          "n_train_positive": 103,
+          "n_validation_positive": 21,
+          "train_prevalence": 0.47907,
+          "validation_prevalence": 0.403846,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.907967,
+          "L_M": 0.910066,
+          "L_C": 0.886353,
+          "L_HM": 0.947747,
+          "L_CH": 0.879758,
+          "L_CM": 0.936931,
+          "L_CHM": 0.893516
+        },
+        "best_arm": {
+          "L_H": "rbf_svm",
+          "L_M": "random_forest",
+          "L_C": "random_forest",
+          "L_HM": "rbf_svm",
+          "L_CH": "logistic",
+          "L_CM": "random_forest",
+          "L_CHM": "rbf_svm"
+        }
+      },
+      {
+        "resplit_seed": 57,
+        "shape": {
+          "n_train": 210,
+          "n_validation": 57,
+          "n_train_positive": 99,
+          "n_validation_positive": 25,
+          "train_prevalence": 0.471429,
+          "validation_prevalence": 0.438596,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.712229,
+          "L_M": 0.683773,
+          "L_C": 0.557079,
+          "L_HM": 0.69879,
+          "L_CH": 0.654483,
+          "L_CM": 0.685238,
+          "L_CHM": 0.640275
+        },
+        "best_arm": {
+          "L_H": "random_forest",
+          "L_M": "rbf_svm",
+          "L_C": "logistic",
+          "L_HM": "random_forest",
+          "L_CH": "random_forest",
+          "L_CM": "random_forest",
+          "L_CHM": "logistic"
+        }
+      },
+      {
+        "resplit_seed": 64,
+        "shape": {
+          "n_train": 218,
+          "n_validation": 49,
+          "n_train_positive": 101,
+          "n_validation_positive": 23,
+          "train_prevalence": 0.463303,
+          "validation_prevalence": 0.469388,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.639512,
+          "L_M": 0.721145,
+          "L_C": 0.696449,
+          "L_HM": 0.743108,
+          "L_CH": 0.695476,
+          "L_CM": 0.718675,
+          "L_CHM": 0.734588
+        },
+        "best_arm": {
+          "L_H": "logistic",
+          "L_M": "rbf_svm",
+          "L_C": "random_forest",
+          "L_HM": "rbf_svm",
+          "L_CH": "logistic",
+          "L_CM": "rbf_svm",
+          "L_CHM": "rbf_svm"
+        }
+      },
+      {
+        "resplit_seed": 71,
+        "shape": {
+          "n_train": 216,
+          "n_validation": 51,
+          "n_train_positive": 101,
+          "n_validation_positive": 23,
+          "train_prevalence": 0.467593,
+          "validation_prevalence": 0.45098,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.689321,
+          "L_M": 0.863868,
+          "L_C": 0.823649,
+          "L_HM": 0.854408,
+          "L_CH": 0.784304,
+          "L_CM": 0.821519,
+          "L_CHM": 0.802147
+        },
+        "best_arm": {
+          "L_H": "rbf_svm",
+          "L_M": "rbf_svm",
+          "L_C": "random_forest",
+          "L_HM": "rbf_svm",
+          "L_CH": "logistic",
+          "L_CM": "random_forest",
+          "L_CHM": "random_forest"
+        }
+      },
+      {
+        "resplit_seed": 88,
+        "shape": {
+          "n_train": 213,
+          "n_validation": 54,
+          "n_train_positive": 96,
+          "n_validation_positive": 28,
+          "train_prevalence": 0.450704,
+          "validation_prevalence": 0.518519,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.733282,
+          "L_M": 0.765803,
+          "L_C": 0.786856,
+          "L_HM": 0.774872,
+          "L_CH": 0.780712,
+          "L_CM": 0.857899,
+          "L_CHM": 0.842247
+        },
+        "best_arm": {
+          "L_H": "random_forest",
+          "L_M": "random_forest",
+          "L_C": "random_forest",
+          "L_HM": "random_forest",
+          "L_CH": "random_forest",
+          "L_CM": "random_forest",
+          "L_CHM": "random_forest"
+        }
+      },
+      {
+        "resplit_seed": 95,
+        "shape": {
+          "n_train": 213,
+          "n_validation": 54,
+          "n_train_positive": 100,
+          "n_validation_positive": 24,
+          "train_prevalence": 0.469484,
+          "validation_prevalence": 0.444444,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.704459,
+          "L_M": 0.769741,
+          "L_C": 0.678937,
+          "L_HM": 0.80072,
+          "L_CH": 0.712639,
+          "L_CM": 0.693528,
+          "L_CHM": 0.712442
+        },
+        "best_arm": {
+          "L_H": "rbf_svm",
+          "L_M": "rbf_svm",
+          "L_C": "logistic",
+          "L_HM": "rbf_svm",
+          "L_CH": "logistic",
+          "L_CM": "logistic",
+          "L_CHM": "rbf_svm"
+        }
+      },
+      {
+        "resplit_seed": 103,
+        "shape": {
+          "n_train": 214,
+          "n_validation": 53,
+          "n_train_positive": 100,
+          "n_validation_positive": 24,
+          "train_prevalence": 0.46729,
+          "validation_prevalence": 0.45283,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.772451,
+          "L_M": 0.796638,
+          "L_C": 0.657265,
+          "L_HM": 0.795292,
+          "L_CH": 0.695297,
+          "L_CM": 0.758974,
+          "L_CHM": 0.779351
+        },
+        "best_arm": {
+          "L_H": "rbf_svm",
+          "L_M": "random_forest",
+          "L_C": "random_forest",
+          "L_HM": "rbf_svm",
+          "L_CH": "random_forest",
+          "L_CM": "random_forest",
+          "L_CHM": "random_forest"
+        }
+      },
+      {
+        "resplit_seed": 117,
+        "shape": {
+          "n_train": 219,
+          "n_validation": 48,
+          "n_train_positive": 101,
+          "n_validation_positive": 23,
+          "train_prevalence": 0.461187,
+          "validation_prevalence": 0.479167,
+          "n_train_patients": 111,
+          "n_validation_patients": 26,
+          "patient_overlap_train_validation": 0
+        },
+        "best_validation_pr_auc": {
+          "L_H": 0.796258,
+          "L_M": 0.806432,
+          "L_C": 0.809314,
+          "L_HM": 0.828284,
+          "L_CH": 0.85695,
+          "L_CM": 0.849381,
+          "L_CHM": 0.862597
+        },
+        "best_arm": {
+          "L_H": "random_forest",
+          "L_M": "random_forest",
+          "L_C": "rbf_svm",
+          "L_HM": "rbf_svm",
+          "L_CH": "rbf_svm",
+          "L_CM": "random_forest",
+          "L_CHM": "rbf_svm"
+        }
+      }
+    ],
+    "summary": {
+      "per_cell": {
+        "L_H": {
+          "e1_equivalent": "C1",
+          "n": 10,
+          "mean": 0.744166,
+          "sd": 0.072382,
+          "min": 0.639512,
+          "max": 0.907967,
+          "range": 0.268455
+        },
+        "L_M": {
+          "e1_equivalent": null,
+          "n": 10,
+          "mean": 0.794752,
+          "sd": 0.066103,
+          "min": 0.683773,
+          "max": 0.910066,
+          "range": 0.226293
+        },
+        "L_C": {
+          "e1_equivalent": "C6",
+          "n": 10,
+          "mean": 0.737119,
+          "sd": 0.095047,
+          "min": 0.557079,
+          "max": 0.886353,
+          "range": 0.329274
+        },
+        "L_HM": {
+          "e1_equivalent": "C5",
+          "n": 10,
+          "mean": 0.809765,
+          "sd": 0.066929,
+          "min": 0.69879,
+          "max": 0.947747,
+          "range": 0.248957
+        },
+        "L_CH": {
+          "e1_equivalent": null,
+          "n": 10,
+          "mean": 0.764529,
+          "sd": 0.073505,
+          "min": 0.654483,
+          "max": 0.879758,
+          "range": 0.225275
+        },
+        "L_CM": {
+          "e1_equivalent": null,
+          "n": 10,
+          "mean": 0.797716,
+          "sd": 0.081324,
+          "min": 0.685238,
+          "max": 0.936931,
+          "range": 0.251693
+        },
+        "L_CHM": {
+          "e1_equivalent": "C7",
+          "n": 10,
+          "mean": 0.790467,
+          "sd": 0.076376,
+          "min": 0.640275,
+          "max": 0.893516,
+          "range": 0.253241
+        }
+      },
+      "ordering_stability": {
+        "L_CHM_beats_L_C": {
+          "wins": 9,
+          "of": 10,
+          "rate": 0.9
+        },
+        "L_CHM_beats_L_H": {
+          "wins": 8,
+          "of": 10,
+          "rate": 0.8
+        },
+        "L_C_beats_L_H": {
+          "wins": 5,
+          "of": 10,
+          "rate": 0.5
+        },
+        "L_CHM_is_best_cell": {
+          "wins": 1,
+          "of": 10,
+          "rate": 0.1
+        }
+      }
+    },
+    "interpretation_note": "A resplit changes which patients are scored, so the spread here is the sampling variability of the validation estimate itself. It is NOT a confidence interval for the frozen split's number and must not be quoted as one."
+  },
+  "runtime_seconds": 2439.395
+}

@@ -1,0 +1,704 @@
+{
+  "ladder_version": "v1-e7-dimension-ladder-1",
+  "created_at_utc": "2026-10-06T11:32:05.629028+00:00",
+  "runtime_seconds": 259.7,
+  "preregistered": false,
+  "what_this_closes": "Evidence sheet \u00a78.4: 'A component sweep for the oral representation is Not available.' It is now available. \u00a78.5's claim that 16D optimality is unsupported can be restated from measurement instead of from absence.",
+  "condition": "A_lesion_polygon",
+  "partition_scored": "validation (frozen); TRAIN used for CV and for fitting PCA",
+  "arms": [
+    "logistic",
+    "rbf_svm",
+    "random_forest"
+  ],
+  "arm_grid_note": "The E5 uniform grid, so rungs are comparable to each other and to the E5 lattice. ARM_SPECS is restored on exit; no name is added to E1's frozen candidate dict.",
+  "pca_note": "backend.ml.reduction.DimensionalityReducer -- the deployed reducer -- fitted on the frozen TRAIN partition only and applied to validation. Not refitted per CV fold, so the train_cv_pr_auc column is mildly optimistic relative to E2/E3's fold-internal PCA; the validation column is not affected because validation rows never enter the fit.",
+  "bootstrap": {
+    "draws": 2000,
+    "seed": 42,
+    "unit": "patient"
+  },
+  "cross_validation": "5-fold StratifiedGroupKFold on TRAIN, grouped by patient, scoring average_precision",
+  "inputs_provenance": {
+    "split_manifest_sha256": "fe45df6d890048756b709e9ddb5144903465930219d44ae7910dbaf3dd1ce629",
+    "descriptor_cache": "C:\\Users\\ISHAN SHUKLA\\Downloads\\Orqis-main\\Orqis-main\\backend\\artifacts\\dataset\\features_handcrafted_lab.npz",
+    "descriptor_dimension": 163,
+    "pixel_cache_version": "v1-pixels-1",
+    "e1_cache_version": "v1-e1-features-1",
+    "e1_cache_dimensions": {
+      "hog": 1764,
+      "texture": 156,
+      "multiscale": 456,
+      "mobilenet": 576
+    },
+    "e1_cache_rows": 2436,
+    "rows_dropped_for_cache_misalignment": {
+      "A_lesion_polygon": {
+        "train": 0,
+        "validation": 0
+      }
+    },
+    "join": "by image id across all three caches; rows missing anywhere are dropped from every candidate, never from one",
+    "descriptor_note": "raw cached 163-dim image descriptor + no reduction (transform=False). The PCA-reduced 8-dim vector is NOT used: comparing candidates against a compressed control would understate C1."
+  },
+  "ladders": {
+    "mobilenet": {
+      "representation": "mobilenet",
+      "label": "frozen MobileNetV3-Small embedding (576) -- the matrix E2/E3 reduce to PCA-8",
+      "native_dimension": 576,
+      "skipped_k": [
+        256
+      ],
+      "rungs": [
+        {
+          "k": 4,
+          "dimension": 4,
+          "qubits_if_amplitude_encoded": 2,
+          "reduction": {
+            "method": "pca",
+            "n_components": 4,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.359783,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.709723,
+          "best_arm": "rbf_svm",
+          "best_linear_validation_pr_auc": 0.662987,
+          "best_nonlinear_validation_pr_auc": 0.709723,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.662987,
+            "rbf_svm": 0.709723,
+            "random_forest": 0.702223
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6336492784391263,
+            "rbf_svm": 0.6857595605611502,
+            "random_forest": 0.6029700584225237
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.723721,
+            "standard_error": 0.122746,
+            "p2_5": 0.459233,
+            "p97_5": 0.935879
+          },
+          "seconds": 13.23
+        },
+        {
+          "k": 8,
+          "dimension": 8,
+          "qubits_if_amplitude_encoded": 3,
+          "reduction": {
+            "method": "pca",
+            "n_components": 8,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.490139,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.838846,
+          "best_arm": "logistic",
+          "best_linear_validation_pr_auc": 0.838846,
+          "best_nonlinear_validation_pr_auc": 0.810995,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.838846,
+            "rbf_svm": 0.742922,
+            "random_forest": 0.810995
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6548233840825439,
+            "rbf_svm": 0.6931488992805436,
+            "random_forest": 0.6729385384405462
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.835376,
+            "standard_error": 0.0893,
+            "p2_5": 0.615924,
+            "p97_5": 0.967397
+          },
+          "seconds": 13.52
+        },
+        {
+          "k": 16,
+          "dimension": 16,
+          "qubits_if_amplitude_encoded": 4,
+          "reduction": {
+            "method": "pca",
+            "n_components": 16,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.63168,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.87872,
+          "best_arm": "logistic",
+          "best_linear_validation_pr_auc": 0.87872,
+          "best_nonlinear_validation_pr_auc": 0.878324,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.87872,
+            "rbf_svm": 0.878324,
+            "random_forest": 0.848737
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.7117753857512674,
+            "rbf_svm": 0.720225604324083,
+            "random_forest": 0.6843668878932418
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.879414,
+            "standard_error": 0.078788,
+            "p2_5": 0.686715,
+            "p97_5": 0.985647
+          },
+          "seconds": 12.81
+        },
+        {
+          "k": 32,
+          "dimension": 32,
+          "qubits_if_amplitude_encoded": 5,
+          "reduction": {
+            "method": "pca",
+            "n_components": 32,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.773665,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.909437,
+          "best_arm": "logistic",
+          "best_linear_validation_pr_auc": 0.909437,
+          "best_nonlinear_validation_pr_auc": 0.89059,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.909437,
+            "rbf_svm": 0.876718,
+            "random_forest": 0.89059
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6951092916576903,
+            "rbf_svm": 0.6868424849771126,
+            "random_forest": 0.6571991144811213
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.909263,
+            "standard_error": 0.062772,
+            "p2_5": 0.752551,
+            "p97_5": 0.993479
+          },
+          "seconds": 16.27
+        },
+        {
+          "k": 64,
+          "dimension": 64,
+          "qubits_if_amplitude_encoded": 6,
+          "reduction": {
+            "method": "pca",
+            "n_components": 64,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.891415,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.826168,
+          "best_arm": "random_forest",
+          "best_linear_validation_pr_auc": 0.813941,
+          "best_nonlinear_validation_pr_auc": 0.826168,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.813941,
+            "rbf_svm": 0.696714,
+            "random_forest": 0.826168
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6765412960937218,
+            "rbf_svm": 0.688496406338061,
+            "random_forest": 0.6502489428102954
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.826233,
+            "standard_error": 0.092533,
+            "p2_5": 0.611115,
+            "p97_5": 0.974057
+          },
+          "seconds": 18.73
+        },
+        {
+          "k": 128,
+          "dimension": 128,
+          "qubits_if_amplitude_encoded": 7,
+          "reduction": {
+            "method": "pca",
+            "n_components": 128,
+            "n_features_in": 576,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.971612,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.704714,
+          "best_arm": "random_forest",
+          "best_linear_validation_pr_auc": 0.656505,
+          "best_nonlinear_validation_pr_auc": 0.704714,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.656505,
+            "rbf_svm": 0.588536,
+            "random_forest": 0.704714
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6676970946076409,
+            "rbf_svm": 0.6435735355376473,
+            "random_forest": 0.5456710428081291
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.722241,
+            "standard_error": 0.122131,
+            "p2_5": 0.47166,
+            "p97_5": 0.930315
+          },
+          "seconds": 22.73
+        },
+        {
+          "k": null,
+          "dimension": 576,
+          "qubits_if_amplitude_encoded": null,
+          "reduction": {
+            "method": "identity",
+            "n_components": 576,
+            "n_features_in": 576,
+            "fitted_on": "n/a (unreduced)",
+            "explained_variance_ratio_sum": 1.0
+          },
+          "validation_pr_auc": 0.892227,
+          "best_arm": "logistic",
+          "best_linear_validation_pr_auc": 0.892227,
+          "best_nonlinear_validation_pr_auc": 0.854325,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.892227,
+            "rbf_svm": 0.781035,
+            "random_forest": 0.854325
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.7354080545894004,
+            "rbf_svm": 0.7699265726388005,
+            "random_forest": 0.7262450980915239
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.891615,
+            "standard_error": 0.069851,
+            "p2_5": 0.719245,
+            "p97_5": 0.984228
+          },
+          "seconds": 26.18
+        }
+      ],
+      "verdict": {
+        "measured": true,
+        "n_rungs": 7,
+        "best_k": 32,
+        "best_validation_pr_auc": 0.909437,
+        "range_across_ladder": 0.204723,
+        "monotone_increasing_in_k_over_reduced_rungs": false,
+        "k8": {
+          "present": true,
+          "validation_pr_auc": 0.838846,
+          "is_ladder_best": false,
+          "n_rungs_strictly_better": 3,
+          "rungs_strictly_better": [
+            16,
+            32,
+            null
+          ],
+          "deficit_to_best": 0.070591
+        },
+        "k16": {
+          "present": true,
+          "validation_pr_auc": 0.87872,
+          "is_ladder_best": false,
+          "n_rungs_strictly_better": 2,
+          "rungs_strictly_better": [
+            32,
+            null
+          ],
+          "deficit_to_best": 0.030717
+        },
+        "n_rungs_whose_ci_overlaps_the_best": 7,
+        "every_ci_overlaps_the_best": true,
+        "statement": "A ladder whose rungs all overlap cannot single out any k. Read with n_rungs_strictly_better: a k with several rungs above it is not optimal, and a k that is nominally best with overlapping intervals is not demonstrated optimal either."
+      }
+    },
+    "c7": {
+      "representation": "c7",
+      "label": "C7 fusion: embedding (576) + CIELAB descriptor (163) + multiscale (456) = 1195",
+      "native_dimension": 1195,
+      "skipped_k": [
+        256
+      ],
+      "rungs": [
+        {
+          "k": 4,
+          "dimension": 4,
+          "qubits_if_amplitude_encoded": 2,
+          "reduction": {
+            "method": "pca",
+            "n_components": 4,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.507321,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.808254,
+          "best_arm": "rbf_svm",
+          "best_linear_validation_pr_auc": 0.494769,
+          "best_nonlinear_validation_pr_auc": 0.808254,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.494769,
+            "rbf_svm": 0.808254,
+            "random_forest": 0.73474
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.5472996621196149,
+            "rbf_svm": 0.6643777909534068,
+            "random_forest": 0.6402322233753696
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.800745,
+            "standard_error": 0.10219,
+            "p2_5": 0.55435,
+            "p97_5": 0.94568
+          },
+          "seconds": 15.5
+        },
+        {
+          "k": 8,
+          "dimension": 8,
+          "qubits_if_amplitude_encoded": 3,
+          "reduction": {
+            "method": "pca",
+            "n_components": 8,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.654066,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.738393,
+          "best_arm": "random_forest",
+          "best_linear_validation_pr_auc": 0.488029,
+          "best_nonlinear_validation_pr_auc": 0.738393,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.488029,
+            "rbf_svm": 0.717817,
+            "random_forest": 0.738393
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.5286009322323861,
+            "rbf_svm": 0.6363609485418733,
+            "random_forest": 0.5654263181016725
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.732692,
+            "standard_error": 0.129415,
+            "p2_5": 0.422594,
+            "p97_5": 0.923962
+          },
+          "seconds": 15.52
+        },
+        {
+          "k": 16,
+          "dimension": 16,
+          "qubits_if_amplitude_encoded": 4,
+          "reduction": {
+            "method": "pca",
+            "n_components": 16,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.780313,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.694812,
+          "best_arm": "random_forest",
+          "best_linear_validation_pr_auc": 0.545863,
+          "best_nonlinear_validation_pr_auc": 0.694812,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.545863,
+            "rbf_svm": 0.506311,
+            "random_forest": 0.694812
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.4953178460634927,
+            "rbf_svm": 0.5790225750053015,
+            "random_forest": 0.5352998907137936
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.713437,
+            "standard_error": 0.121108,
+            "p2_5": 0.445358,
+            "p97_5": 0.916227
+          },
+          "seconds": 16.91
+        },
+        {
+          "k": 32,
+          "dimension": 32,
+          "qubits_if_amplitude_encoded": 5,
+          "reduction": {
+            "method": "pca",
+            "n_components": 32,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.881751,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.732506,
+          "best_arm": "rbf_svm",
+          "best_linear_validation_pr_auc": 0.690216,
+          "best_nonlinear_validation_pr_auc": 0.732506,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.690216,
+            "rbf_svm": 0.732506,
+            "random_forest": 0.622851
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.5487178677147052,
+            "rbf_svm": 0.5606570701145351,
+            "random_forest": 0.5431531519493573
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.727605,
+            "standard_error": 0.131584,
+            "p2_5": 0.408251,
+            "p97_5": 0.922539
+          },
+          "seconds": 17.49
+        },
+        {
+          "k": 64,
+          "dimension": 64,
+          "qubits_if_amplitude_encoded": 6,
+          "reduction": {
+            "method": "pca",
+            "n_components": 64,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.952686,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.691526,
+          "best_arm": "rbf_svm",
+          "best_linear_validation_pr_auc": 0.681557,
+          "best_nonlinear_validation_pr_auc": 0.691526,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.681557,
+            "rbf_svm": 0.691526,
+            "random_forest": 0.625976
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.6347008434400201,
+            "rbf_svm": 0.6327298042814173,
+            "random_forest": 0.5804924265985297
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.683562,
+            "standard_error": 0.146297,
+            "p2_5": 0.364827,
+            "p97_5": 0.912107
+          },
+          "seconds": 17.69
+        },
+        {
+          "k": 128,
+          "dimension": 128,
+          "qubits_if_amplitude_encoded": 7,
+          "reduction": {
+            "method": "pca",
+            "n_components": 128,
+            "n_features_in": 1195,
+            "n_samples_seen": 215,
+            "fitted_on": "train partition only",
+            "explained_variance_ratio_sum": 0.99136,
+            "whiten": false,
+            "reduction_version": "reduction-1"
+          },
+          "validation_pr_auc": 0.693761,
+          "best_arm": "rbf_svm",
+          "best_linear_validation_pr_auc": 0.647379,
+          "best_nonlinear_validation_pr_auc": 0.693761,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.647379,
+            "rbf_svm": 0.693761,
+            "random_forest": 0.628379
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.5803937228811078,
+            "rbf_svm": 0.572311018660581,
+            "random_forest": 0.5724369302028498
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.696778,
+            "standard_error": 0.138082,
+            "p2_5": 0.383491,
+            "p97_5": 0.919504
+          },
+          "seconds": 14.79
+        },
+        {
+          "k": null,
+          "dimension": 1195,
+          "qubits_if_amplitude_encoded": null,
+          "reduction": {
+            "method": "identity",
+            "n_components": 1195,
+            "n_features_in": 1195,
+            "fitted_on": "n/a (unreduced)",
+            "explained_variance_ratio_sum": 1.0
+          },
+          "validation_pr_auc": 0.913038,
+          "best_arm": "logistic",
+          "best_linear_validation_pr_auc": 0.913038,
+          "best_nonlinear_validation_pr_auc": 0.903522,
+          "per_arm_validation_pr_auc": {
+            "logistic": 0.913038,
+            "rbf_svm": 0.881537,
+            "random_forest": 0.903522
+          },
+          "per_arm_train_cv_pr_auc": {
+            "logistic": 0.7749237055117247,
+            "rbf_svm": 0.7767995677527877,
+            "random_forest": 0.7570995062660143
+          },
+          "arm_failures": {},
+          "bootstrap": {
+            "measured": true,
+            "n_draws_requested": 2000,
+            "n_draws_usable": 2000,
+            "unit": "patient (resampled with replacement)",
+            "mean": 0.911712,
+            "standard_error": 0.059572,
+            "p2_5": 0.760998,
+            "p97_5": 0.988785
+          },
+          "seconds": 26.46
+        }
+      ],
+      "verdict": {
+        "measured": true,
+        "n_rungs": 7,
+        "best_k": null,
+        "best_validation_pr_auc": 0.913038,
+        "range_across_ladder": 0.221512,
+        "monotone_increasing_in_k_over_reduced_rungs": false,
+        "k8": {
+          "present": true,
+          "validation_pr_auc": 0.738393,
+          "is_ladder_best": false,
+          "n_rungs_strictly_better": 2,
+          "rungs_strictly_better": [
+            4,
+            null
+          ],
+          "deficit_to_best": 0.174645
+        },
+        "k16": {
+          "present": true,
+          "validation_pr_auc": 0.694812,
+          "is_ladder_best": false,
+          "n_rungs_strictly_better": 4,
+          "rungs_strictly_better": [
+            4,
+            8,
+            32,
+            null
+          ],
+          "deficit_to_best": 0.218226
+        },
+        "n_rungs_whose_ci_overlaps_the_best": 7,
+        "every_ci_overlaps_the_best": true,
+        "statement": "A ladder whose rungs all overlap cannot single out any k. Read with n_rungs_strictly_better: a k with several rungs above it is not optimal, and a k that is nominally best with overlapping intervals is not demonstrated optimal either."
+      }
+    }
+  },
+  "test_partition_touched": false
+}
