@@ -1,6 +1,6 @@
 # Benchmarking Shallow Hybrid Quantum–Classical Models for Oral Lesion Screening: A Controlled Empirical Study
 
-**Authors:** Ishan Narayan Shukla\*, Pratyaksh Ranjan, Jay Karan Laxme, Rudransh Rajveer Singh, Prajjwal Patel, Khoirom Motilal Singh  
+**Authors:** Ishan Narayan Shukla\*, Pratyaksh Ranjan, Jay Karan Laxme, Rudransh Rajveer Singh, Khoirom Motilal Singh  
 **Affiliation:** Department of Computer Science and Engineering, Indian Institute of Information Technology Manipur, Imphal, India  
 \*Corresponding author: `ishan256022@iiitmanipur.ac.in`
 
